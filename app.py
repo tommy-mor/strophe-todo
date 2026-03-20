@@ -101,7 +101,7 @@ def add(text: str):
     TODOS.append(t)
     return PlainTextResponse(
         ";".join([
-            Three[Selector("#add-form")][MORPH][add_form()],
+            Three[Selector("#add-form")][MORPH][add_form()], # nonce expired, capability needs refreshing
             Three[Selector("#todo-list")][APPEND][todo_item(t)],
             Three[Selector("p.count")][MORPH][remaining_count()],
         ]),
