@@ -37,12 +37,12 @@ def _find(todo_id: str) -> dict | None:
 def todo_item(t: dict) -> list:
     done_class = "done" if t["done"] else ""
     return ["li", {"id": f"todo-{t['id']}", "class": f"todo-item {done_class}".strip()},
-        ["form.inline", {"action": "/eval", "method": "post", "data-reset": "false"},
+        ["form.inline", {"action": "/","method": "post", "data-reset": "false"},
             *signer.snippet_hidden(f"toggle('{t['id']}')"),
             ["button.toggle", {"type": "submit"}, "x" if t["done"] else "o"],
         ],
         ["span.text", t["text"]],
-        ["form.inline", {"action": "/eval", "method": "post"},
+        ["form.inline", {"action": "/","method": "post"},
             *signer.snippet_hidden(f"delete('{t['id']}')"),
             ["button.delete", {"type": "submit"}, "del"],
         ],
@@ -55,7 +55,7 @@ def todo_list() -> list:
 
 
 def add_form() -> list:
-    return ["form#add-form", {"action": "/eval", "method": "post"},
+    return ["form#add-form", {"action": "/","method": "post"},
         *signer.snippet_hidden("print('arstar'); add($text)"),
         ["input", {"type": "text", "name": "text", "placeholder": "what needs doing?", "autofocus": "true"}],
         ["button", {"type": "submit"}, "add"],
@@ -160,7 +160,7 @@ async def index():
     return HTMLResponse(shell_html())
 
 
-@app.post("/eval")
+@app.post("/")
 async def do(request: Request):
     form = await request.form()
     try:
