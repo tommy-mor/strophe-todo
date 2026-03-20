@@ -4,6 +4,7 @@ Todo list app — strophe demo.
     uv run uvicorn app:app --reload
 """
 
+import asyncio
 import uuid
 
 from fastapi import FastAPI, Request
@@ -98,6 +99,7 @@ def add(text: str):
     TODOS.append(t)
     return PlainTextResponse(
         ";".join([
+            Three[Selector("#add-form")][MORPH][add_form()],
             Three[Selector("#todo-list")][APPEND][todo_item(t)],
             Three[Selector("p.count")][MORPH][remaining_count()],
         ]),
@@ -144,6 +146,8 @@ async def sse(request: Request):
             Three[Selector("head")][APPEND][["style", STYLE]],
             Three[Selector("body")][MORPH][["body", page()]],
         ])
+        while True: await asyncio.sleep(15) # keep the sse connection open
+            
 
     return StreamingResponse(generate(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
